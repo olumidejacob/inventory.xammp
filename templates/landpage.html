@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>drinks</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Bootstrap Spinner-->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    body, html {
+      height: 150%;
+      margin: 0;
+      background-color: #C0C0C0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+    #main-content {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container text-center">
+    <img src="/static/factoryphoto-514475855-612x612.jpg" alt="" style="width:80% ;">
+  </div>
+
+  <!-- Spinner Section -->
+  <div id="loader">
+    <div class="spinner-border text-primary" style="width: 4rem; height: 4rem; color: white;" role="status"></div>
+    <p class="mt-3 fs-5 text-secondary">Loading...</p>
+  </div>
+
+  <!-- Hidden Content (appears after 10s) -->
+  <div id="main-content">
+    <h2>Inventory Management.</h2>
+    <a href="{{ url_for('index') }}" class="btn btn-primary">Enter App</a>
+  </div>
+
+  <script>
+    // Show main content after 10 seconds
+    setTimeout(() => {
+      document.getElementById("loader").style.display = "none";
+      document.getElementById("main-content").style.display = "block";
+    }, 10000); // 10,000 ms = 10 seconds
+  </script>
+
+</body>
+</html>
