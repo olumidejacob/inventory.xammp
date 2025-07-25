@@ -14,6 +14,13 @@ app.config['MYSQL_PASSWORD'] = ""
 app.config['MYSQL_DB'] = "inventory"
 
 mysql = MySQL(app)
+@app.route('/')
+def landing():
+    return render_template('landing.html')
+
+@app.route('/selldrinks')
+def sell():
+    return render_template('sell.html',)
 
 @app.route('/home')
 def Index():
@@ -39,3 +46,31 @@ def insert():
         cursor.execute("INSERT INTO softdrinktbl (name_of_drink, price, quantity, expiry_date, batch_number, drink_subtype) VALUES (%s, %s, %s, %s, %s, %s)", (name, price, quantity, expiry_date, batch_number, drink_subtype))
         mysql.connection.commit()
         return redirect(url_for('Index'))
+        
+@app.route("/edit/<int:id>", methods=["GET", "POST"])
+def edit(id):
+    cursor = mysql.connection.cursor()
+
+    if request.method == "POST":
+        name = request.form['name_of_drink']
+        price = request.form['price']
+        quantity = request.form['quantity']
+        expiry_date = request.form['expiry_date']
+        batch_number = request.form['batch_number']
+        subtype = request.form['subtype']
+
+        cursor.execute("""
+            UPDATE drinks_inventory
+            SET name_of_drink = %s, price = %s, quantity = %s, expiry_date = %s, batch_number = %s, subtype = %s
+            WHERE ID = %s
+        """, (name, price, quantity, expiry_date, batch_number, subtype, id))
+
+        mysql.connection.commit()
+        cursor.close()
+        flash(f"{name} updated successfully!", "success")
+        return redirect(url_for('index'))
+
+    cursor.execute("SELECT * FROM drinks_inventory WHERE ID = %s", (id,))
+    drink = cursor.fetchone()
+    cursor.close()
+    return render_template("update_drinks.html",
