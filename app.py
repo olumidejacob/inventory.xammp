@@ -100,7 +100,7 @@ def insert_snack():
 
         cursor = mysql.connection.cursor()
 
-        cursor.execute("SELECT * FROM snacks WHERE name_of_item = %s",
+        cursor.execute("SELECT * FROM snack WHERE name_of_item = %s",
                        (name,))
         existing = cursor.fetchone()
 
@@ -150,7 +150,7 @@ def edit_snack(id):
     cursor.execute("SELECT * FROM beverages WHERE ID = %s", (id,))
     item = cursor.fetchone()
     cursor.close()
-    return render_template("snacks.html", snack=item)
+    return render_template("Snack.html", snack=item)
 
     
 
