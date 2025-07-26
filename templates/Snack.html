@@ -1,1 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Beverages</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+    <h2 class="mb-4">Edit Beverage Details</h2>
 
+
+    <form method="POST">
+        <div class="mb-3">
+            <label for="name_of_item" class="form-label">Name of Item</label>
+            <input type="text" class="form-control" id="name_of_item" name="name_of_item" value="{{ beverage[1] }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="price" class="form-label">Price</label>
+            <input type="number" class="form-control" id="price" name="price" value="{{ beverage[2] }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="quantity" class="form-label">Quantity</label>
+            <input type="number" class="form-control" id="quantity" name="quantity" value="{{ beverage[3] }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="expiry_date" class="form-label">Expiry Date</label>
+            <input type="date" class="form-control" id="expiry_date" name="expiry_date" value="{{ beverage[4] }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="batch_number" class="form-label">Batch Number</label>
+            <input type="text" class="form-control" id="batch_number" name="batch_number" value="{{ beverage[5] }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="subtype" class="form-label">Subtype</label>
+            <input type="text" class="form-control" id="subtype" name="subtype" value="{{ beverage[6] }}" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Update Item</button>
+        <a href="{{ url_for('index') }}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
