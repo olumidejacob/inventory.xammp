@@ -16,20 +16,22 @@ app.config['MYSQL_DB'] = "inventory"
 mysql = MySQL(app)
 @app.route('/')
 def landing():
-    return render_template('landing.html')
+    return render_template('landpage.html')
 
-@app.route('/selldrinks')
+@app.route('/sell')
 def sell():
-    return render_template('sell.html',)
+    return render_template('sellingpage.html',)
 
 @app.route('/home')
 def Index():
     cursor = mysql.connection.cursor()
     cursor.execute("SELECT * FROM softdrinktbl")
     data = cursor.fetchall()
+     cursor.execute("SELECT * FROM snacks"
+    item = cursor.fetchall()
     cursor.close()
     print(data)
-    return render_template('index.html', drinks=data)
+    return render_template('index.html', drinks=data, snack=item)
 
 
 @app.route('/insert_drink', methods=['POST'])
@@ -76,6 +78,16 @@ def edit(id):
     cursor.close()
     return render_template("UPDATEON_DRINKS_INVENTORY.HTML", drink=drink)
 
+@app.route("/delete/<int:id>", methods=["GET"])
+def delete(id):
+        cursor = mysql.connection.cursor()
+        cursor.execute("DELETE FROM drinks_inventory WHERE ID = %s", (id,))
+        mysql.connection.commit()
+        cursor.close()
+        flash("Drink deleted successfully!", "success")
+        return redirect(url_for('index'))
+
+
 @app.route('/insert_snack', methods=['POST'])
 def insert_snack():
      if request.method == 'POST':
@@ -97,30 +109,50 @@ def insert_snack():
             cursor.close()
             return redirect(url_for('index'))
         
-        cursor.execute("INSERT INTO beverages (name_of_item, price, quantity, expiry_date, batch_number, subtype) VALUES (%s, %s, %s, %s, %s, %s)",
+        cursor.execute("INSERT INTO snack (name_of_item, price, quantity, expiry_date, batch_number, subtype) VALUES (%s, %s, %s, %s, %s, %s)",
                        (name, price,quantity, expiry_date, batch_number, subtype))
         mysql.connection.commit()
         cursor.close()
         flash(f"{name} added successfully!", "success")
         return redirect(url_for('index'))
-     
-@app.route("/delete/<int:id>", methods=["GET"])
-def delete(id):
+
+@app.route("/delete_snack/<int:id>", methods=["GET"])
+def delete_snack(id):
         cursor = mysql.connection.cursor()
-        cursor.execute("DELETE FROM drinks_inventory WHERE ID = %s", (id,))
+        cursor.execute("DELETE FROM beverages WHERE ID = %s", (id,))
         mysql.connection.commit()
         cursor.close()
-        flash("Drink deleted successfully!", "success")
+        flash("snack deleted successfully!", "success")
         return redirect(url_for('index'))
 
-@app.route("/delete_drink/<int:id>", methods=["GET"])
-def delete_drink(id):
-        cursor = mysql.connection.cursor()
-        cursor.execute("DELETE FROM softdrinktbl WHERE ID = %s", (id,))
+
+@app.route('/edit_snack/<int:id>', methods=['GET', 'POST'])
+def edit_snack(id):
+    cursor = mysql.connection.cursor()
+
+    if request.method == 'POST':
+        name = request.form['name_of_item']
+        price = request.form['price']
+        quantity = request.form['quantity']
+        expiry_date = request.form['expiry_date']
+        batch_number = request.form['batch_number']
+        subtype = request.form['subtype']
+
+        cursor.execute(""" UPDATE beverages
+                        SET name_of_item = %s, price = %s, quantity =%s, expiry_date = %s, batch_number = %s, subtype = %s
+                         WHERE ID = %s
+                     """, (name, price, quantity, expiry_date, batch_number, subtype, id))
         mysql.connection.commit()
         cursor.close()
-        flash("Drink deleted successfully!", "success")
+        flash(f"{name} updated successfully!", "success")
         return redirect(url_for('index'))
+
+    cursor.execute("SELECT * FROM beverages WHERE ID = %s", (id,))
+    item = cursor.fetchone()
+    cursor.close()
+    return render_template("snacks.html", snack=item)
+
+    
 
 if __name__ == '__main__': 
     app.run(debug=True) 

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Under Maintenance</title>
+
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+
+    <style>
+      body,
+      html {
+        height: 100%;
+        margin: 0;
+        background-color: #cc5f5f;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .img {
+        width: 200px;
+        max-width: 60%;
+        margin-bottom: 20px;
+      }
+
+      .btn-primary {
+        margin-top: 20px;
+        padding: 10px 20px;
+        font-size: 1.2rem;
+      }
+
+      h1 {
+        font-weight: bold;
+        color: #1a1616;
+      }
+    </style>
+  </head>
+  <body>
+    <img src="/static/warning.svg" class="img" alt="Warning Image" />
+    <h1>Sales Page is Currently Under Maintenance</h1>
+    <a href="{{ url_for('index') }}" class="btn btn-primary">Home Page</a>
+  </body>
+</html>
